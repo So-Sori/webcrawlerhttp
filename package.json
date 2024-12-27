@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon crawler.js",
+    "start": "nodemon main.js",
     "test": "jest"
   },
   "repository": {
