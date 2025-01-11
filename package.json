@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node --no-warnings main.js",
+    "start": "nodemon --no-warnings app.js",
     "test": "jest"
   },
   "repository": {
@@ -22,7 +22,9 @@
     "jest": "^29.7.0"
   },
   "dependencies": {
-    "jsdom": "^24.1.1",
+    "cors": "^2.8.5",
+    "cors-anywhere": "^0.4.4",
+    "express": "^4.21.2",
     "webcrawlerhttp": "file:"
   }
 }

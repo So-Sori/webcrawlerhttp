@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Diva | Search Engine Bot</title>
+    <link rel="shortcut icon" href="/imgs/logo.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/styles/about-diva.css" />
+  </head>
+  <body>
+    <header id="header">
+      <nav class="menu">
+        <ul class="menu-item-container">
+          <a href="/index.html"><li class="menu-item">Index</li></a>
+          <a href="/web-crawler/crawler.html"
+            ><li class="menu-item">Web crawler</li></a
+          >
+          <a href="/shopping-zone/shopping.html"
+            ><li class="menu-item">Shopping zone</li></a
+          >
+          <a href="/trip-planner/trip.html"
+            ><li class="menu-item">Trip planner</li></a
+          >
+          <a href="/book-search/book.html"
+            ><li class="menu-item">Book searcher</li></a
+          >
+        </ul>
+      </nav>
+
+      <div class="titles-container">
+        <h1 class="title-page">Diva</h1>
+        <h2 class="sub-title-page">Your personal search engine bot</h2>
+      </div>
+
+      <div class="portada-container">
+        <div class="img-background">
+          <img src="/imgs/diva-4.png" alt="" />
+        </div>
+      </div>
+    </header>
+
+    <footer id="footer"></footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        fetch("/components/footer.html")
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById("footer").innerHTML = data;
+          })
+          .catch((error) => console.error("Error loading footer:", error));
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diva | Search Engine Bot</title>
+    <link rel="shortcut icon" href="/imgs/logo.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="./crawler.css" />
+</head>
+<body>
+    <header id="header"></header>
+
+    <h1>Web crawler</h1>
+    <div class="search-container">
+        <input type="search" name="search" id="search-bar" placeholder="Insert a link">
+        <input type="submit" value="Send" id="send-link-btn">
+        <div class="status-request-container">
+            <p id="status-request"></p>
+        </div>
+    </div>
+    <div class="link-container" id="link-container">
+
+    </div>
+
+    <footer id="footer"></footer>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        fetch('/components/header.html')
+          .then(response => response.text())
+          .then(data => {
+            document.getElementById('header').innerHTML = data;
+          })
+          .catch(error => console.error('Error loading header:', error));
+      });
+
+      document.addEventListener('DOMContentLoaded', () => {
+        fetch('/components/footer.html')
+          .then(response => response.text())
+          .then(data => {
+            document.getElementById('footer').innerHTML = data;
+          })
+          .catch(error => console.error('Error loading footer:', error));
+      });
+    </script>
+
+    <script type="module" src="./main.js"></script>
+    <!-- <script type="module" src="./crawler.js"></script> -->
+</body>
+</html>

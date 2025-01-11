@@ -4,8 +4,11 @@
     box-sizing: border-box;
 }
 body{
-    width: 100%;
+    /* width: 100%;
     height: 100vh;
     background-image: url('../imgs/loading.gif');
-    background-position: center center;
+    background-position: center center; */
+}
+.header-frame{
+    height: 100vh;
 }
