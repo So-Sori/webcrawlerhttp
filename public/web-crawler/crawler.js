@@ -1,87 +1,38 @@
-export async function crawlingPage(baseURL,currentPageUrl,pages) {
+import { crawlingPage } from "../js/globalCrawler.js";
+import { linksCardCreator } from "./linksCardCreator.js";
 
-    const baseURLObject = new URL(baseURL);
-    const currentPageUrlObject = new URL(currentPageUrl);
-    let count = 0;
+const btnSendForm = document.getElementById("send-link-btn");
 
-    if (baseURLObject.hostname != currentPageUrlObject.hostname ) {
-        count++;
-        console.log("salio del main domain",count);
-        return pages;
-    }
+async function generalCrawler() {
+  let searchValue = document.getElementById("search-bar").value;
+  let messageStatus = document.getElementById("status-request");
+  let text = "";
+  const linksContainer = document.getElementById("link-container");
 
-    const normalizeCurrentUrl = normalizeURL(currentPageUrl);    
-    if (pages[normalizeCurrentUrl] > 0) {
-        pages[normalizeCurrentUrl]++;
-        return pages;
-    }
-
-    pages[normalizeCurrentUrl] = 1;    
-
-    try{
-        const resp = await fetch(`http://localhost:3000/proxy/${currentPageUrl}`,{
-            method: "GET"
-        })
-        if (resp.status > 399) {
-            console.log(`Error in fetch status code: ${resp.status}, on page ${currentPageUrl}`);
-            return pages;
-        }
-        const contentType = resp.headers.get("content-type");
-
-        if (!contentType.includes('text/html')) {
-            console.log(`non html response: ${contentType}, on page ${currentPageUrl}`);
-            return pages;
-        }
-
-        const htmlBody = await resp.text();
-        const nextUrls = getUrlsFromHTML(htmlBody,baseURLObject.hostname);
-
-        for(const nextUrl of nextUrls){
-            pages = await crawlingPage(baseURL,nextUrl,pages);
-        }
-    }catch(err){
-        console.log(`Error in fetch: ${err.message}, on page ${currentPageUrl}`);
-    }
-
-    console.log(pages);
-    return pages;
-}
-
-function getUrlsFromHTML(HTMLBody, baseURL){
-    const urls = [];
-    const dom = new DOMParser().parseFromString(HTMLBody,"text/html");
-    const linkElements = dom.querySelectorAll('a');
+  let baseURL = null;
+  try {
     
-    for(const linkElement of linkElements){        
-        if (linkElement.href.slice(0,1) === "/") {
-            //relative
-            try{
-                const urlObject = new URL(`${baseURL}${linkElement.href}`);
-                urls.push(urlObject.href);
-            }catch(err){
-                console.log("error invalid url: ",err.message); 
-            }
-
-        } else {
-            //absolute
-            try{
-                let hrefJustPath = linkElement.href.split("http://localhost:3000")[1];
-                const urlObject = new URL(`https://${baseURL}${hrefJustPath}`);
-                urls.push(urlObject.href);
-                console.log("absolute urls...",urlObject.href);
-            }catch(err){
-                console.log("error invalid url: ",err.message); 
-            }
-        }
+    if (searchValue.slice(0, 1) === "/") {
+        throw new Error("No valid website provided, please provide a valid url to search.");
     }
-    return urls;
+    else if (searchValue === "") {
+        text = "No website provided, please provide a url to search.";
+    } else {
+        new URL(searchValue);
+        baseURL = searchValue;
+        console.log(`Starting crawling in: ${baseURL}`);
+        text = `Searching for urls on the page: ${baseURL}`;
+    }
+  } catch (err) {
+    text = "No valid website provided, please provide a valid url to search.";
+  }
+
+  messageStatus.innerText = text;
+
+  const pages = await crawlingPage(baseURL, baseURL, {});
+  linksContainer.innerHTML = linksCardCreator(pages);
 }
 
-function normalizeURL(URLstring){
-    let urlObject = new URL(URLstring);
-    const hostName = `${urlObject.hostname}${urlObject.pathname}`;
-    if (hostName.length > 0 && hostName.slice(-1) === '/'){
-        return hostName.slice(0,-1);
-    }
-    return hostName;
-}
+btnSendForm.addEventListener("click", () => {
+  generalCrawler();
+});
