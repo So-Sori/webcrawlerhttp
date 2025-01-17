@@ -25,9 +25,13 @@ async function shoopingZone() {
       0
     );
   }
-
-  for (const linkPage of linkPages) {
-    containerProducsCard.innerHTML += await shoopingLinksCard(linkPage);
+  let arrPages = [...linkPages];
+  
+  for (const linkPage of arrPages) {
+    if (!(arrPages.indexOf(linkPage) === 0)) {
+      let card = await shoopingLinksCard(linkPage);
+      containerProducsCard.appendChild(card);
+    }
   }
 }
 
