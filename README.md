@@ -12,12 +12,6 @@ What began as a straightforward web crawler has evolved into a versatile and fea
 - **Travel Planner:** Gather details about flights, hotels, and destinations to plan your next adventure.  
 - **Book Finder:** Search for books across different online bookstores, showing prices and availability.
 
-### Optional Features
-
-- **Blog Articles:** Fetch blog articles based on specified topics, with a customizable or static feed.  
-- **Fake News Detector:** Analyze articles for credibility and identify common patterns of misinformation.  
-- **Viral Content Hunter:** Discover trending memes, videos, and other viral content across social media platforms.
-
 ## Installation
 
 To get started with this project, follow the steps below:
