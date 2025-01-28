@@ -1,6 +1,6 @@
 export async function crawlingPage(baseURL, currentPageUrl, pages, depth) {
   const maxDepth = 1;
-  const maxSetLimit = 10;
+  const maxSetLimit = 7;
   const baseURLObject = new URL(baseURL);
   const currentPageUrlObject = new URL(currentPageUrl);
 
@@ -63,7 +63,6 @@ export async function crawlingPage(baseURL, currentPageUrl, pages, depth) {
     }
 
     let randomUserAgent = getRandomUserAgent();
-
     let resp = await fetch(`http://localhost:3000/proxy/${currentPageUrl}`, {
       method: "GET",
       headers: {
@@ -71,7 +70,9 @@ export async function crawlingPage(baseURL, currentPageUrl, pages, depth) {
       },
     });
 
-    while (resp.status === 503) {
+    let newUserAgentDelay = 1000;
+    while (resp.status === 503 && newUserAgentDelay <= 5000) {
+      await delay(newUserAgentDelay);
       randomUserAgent = getRandomUserAgent();
       resp = await fetch(`http://localhost:3000/proxy/${currentPageUrl}`, {
         method: "GET",
@@ -79,14 +80,15 @@ export async function crawlingPage(baseURL, currentPageUrl, pages, depth) {
           "User-Agent": randomUserAgent,
         },
       });
+      newUserAgentDelay += 500;
     }
+
     if (resp.status > 399) {
       console.log(
         `Error in fetch status code: ${resp.status}, on page ${currentPageUrl}`
       );
       return pages;
     }
-
     const contentType = resp.headers.get("content-type");
     if (!contentType.includes("text/html")) {
       console.log(
@@ -102,13 +104,13 @@ export async function crawlingPage(baseURL, currentPageUrl, pages, depth) {
       if (depth > maxDepth || pages.size >= maxSetLimit) {
         return pages;
       } else {
-        await delay(1500);
+        await delay(1000);
         await crawlingPage(baseURL, nextUrl, pages, depth + 1);
         pages.add(normalizeURL(nextUrl));
       }
     }
   } catch (err) {
-    console.log(`Error in fetch: ${err.message}, on page ${currentPageUrl}`);
+    return err;
   }
 
   return pages;
