@@ -17,12 +17,31 @@ export async function shoopingLinksCard(arrPages, containerProducsCard) {
       const title = dom.getElementById("title");
       const dolarSing = dom.querySelector(".a-price-symbol");
       const price = dom.querySelector(".a-price-whole");
+      const savingPercent = dom.querySelector("._cDEzb_apex-savings-percent_nsC2Z");
+      const realPrice = dom.querySelector(".a-offscreen");
+      const parseLink = 'https://' + linkPage;
 
       containerProducsCard.innerHTML += `
       <div class="card-product">
-        ${img.outerHTML}
-        ${title.innerHTML}
-        ${dolarSing.innerHTML}${price.innerHTML}
+        <div>
+          ${img.outerHTML}
+        </div>
+
+        <div>
+          ${title.innerHTML}
+        </div>
+
+        <div>
+          Saving: ${savingPercent.innerHTML}
+        </div>
+        <div>
+          Price: ${dolarSing.innerHTML}${price.innerHTML}
+        </div>
+        <div>
+          Recomended price: ${realPrice.innerHTML}
+        </div>
+        <a href="${parseLink}" target="_blank">Product on Amazon</a>
+
       </div>
         `;
     }
