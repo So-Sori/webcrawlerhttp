@@ -1,6 +1,6 @@
 export async function crawlingPage(baseURL, currentPageUrl, pages, depth) {
   const maxDepth = 1;
-  const maxSetLimit = 100;
+  const maxSetLimit = 7;
   const baseURLObject = new URL(baseURL);
   const currentPageUrlObject = new URL(currentPageUrl);
 
@@ -104,6 +104,7 @@ export async function crawlingPage(baseURL, currentPageUrl, pages, depth) {
       if (depth > maxDepth || pages.size >= maxSetLimit) {
         return pages;
       } else {
+        await delay(1000);
         await crawlingPage(baseURL, nextUrl, pages, depth + 1);
         pages.add(normalizeURL(nextUrl));
       }
